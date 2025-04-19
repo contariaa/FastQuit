@@ -1,0 +1,32 @@
+{
+  "fastquit.toast.title": "FastQuit संपन्न!",
+  "fastquit.toast.description": "सेविंग पूरी हो गई है \"%s\"",
+  "fastquit.toast.deleted": "\"%s\" हटा दिया गया",
+
+  "fastquit.screen.waiting": "\"%s\" के सहेजे जाने की प्रतीक्षा की जा रही है...",
+
+  "fastquit.config.general.showSavingTime.toastsOnly": "केवल टोस्ट",
+  "fastquit.config.performance.backgroundPriority.1": "1 (न्यूनतम)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (अनुशंसित)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (डिफ़ॉल्ट)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (अधिकतम)",
+  "fastquit.config.compat.allowMultipleServers.disabledForCompat": "§cनिम्नलिखित मॉड्स से जुड़ी समस्याओं से बचने के लिए यह विकल्प अक्षम किया गया है:\n%s",
+
+  "text.autoconfig.fastquit.title": "FastQuit",
+  "text.autoconfig.fastquit.category.default": "सामान्य",
+  "text.autoconfig.fastquit.option.renderSavingScreen": "\"विश्व को सहेजना\" स्क्रीन प्रस्तुत करें",
+  "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "उच्च रेंडर दूरी पर खेलते समय, दुनिया को छोड़ने में अभी भी थोड़ा समय लग सकता है क्योंकि क्लाइंट-साइड चंक स्टोरेज को साफ़ करना होगा।\nइस सेटिंग को सक्षम करने से \"विश्व को सहेजना\" स्क्रीन रेंडर हो जाएगी।",
+  "text.autoconfig.fastquit.option.showToasts": "टोस्ट दिखाएँ",
+  "text.autoconfig.fastquit.option.showToasts.@Tooltip": "यह निर्धारित करता है कि किसी विश्व के सहेजे जाने पर टोस्ट दिखाया जाएगा या नहीं।",
+  "text.autoconfig.fastquit.option.showSavingTime": "बचत का समय दिखाएँ",
+  "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "यह निर्धारित करता है कि दुनिया को बचाने में जो समय लगा/लगता है, उसे टोस्ट और विश्व सूची में प्रदर्शित किया जाएगा या नहीं.",
+  "text.autoconfig.fastquit.category.performance": "प्रदर्शन",
+  "text.autoconfig.fastquit.option.backgroundPriority": "पृष्ठभूमि थ्रेड प्राथमिकता",
+  "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "पृष्ठभूमि में दुनिया को सहेजते समय सर्वर की थ्रेड प्राथमिकता सेट करता है।\nयह सहेजते समय क्लाइंट के प्रदर्शन को बेहतर बनाने के लिए किया जाता है, लेकिन इससे सहेजने में कुल मिलाकर अधिक समय लगेगा।",
+  "text.autoconfig.fastquit.category.compat": "मॉड अनुकूलता",
+  "text.autoconfig.fastquit.option.allowMultipleServers": "एकाधिक चल रहे विश्वों की अनुमति दें",
+  "text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip": "जब यह विकल्प सक्षम होता है, तो आप एक नई दुनिया में शामिल हो सकते हैं जबकि पुरानी दुनिया अभी भी सहेजी जा रही है।\nयह वेनिला Minecraft में करना सुरक्षित है, लेकिन कुछ मॉड्स में समस्याएँ हो सकती हैं जब 2 सर्वर एक ही समय में चलते हैं।",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "दुनिया अभी भी सहेजी जा रही है, जबकि शीर्षक स्क्रीन पर वापस लौटें!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "यह मॉड आपको टाइटल स्क्रीन पर जल्दी लौटने की सुविधा देता है, जबकि आपकी दुनिया अभी भी पृष्ठभूमि में सहेजी जा रही है।"
+}
