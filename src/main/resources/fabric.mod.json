@@ -41,7 +41,8 @@
       "links": {
         "modmenu.discord": "https://discord.gg/B6ZV8SF672",
         "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/fastquit",
-        "modmenu.modrinth": "https://modrinth.com/mod/fastquit"
+        "modmenu.modrinth": "https://modrinth.com/mod/fastquit",
+        "modmenu.donate" : "https://ko-fi.com/contaria"
       }
     },
     "catalogue": {
