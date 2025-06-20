@@ -1,4 +1,4 @@
-package com.kingcontaria.fastquit.mixin;
+package me.contaria.fastquit.mixin;
 
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.SessionLock;

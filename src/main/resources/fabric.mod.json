@@ -2,37 +2,30 @@
   "schemaVersion": 1,
   "id": "fastquit",
   "version": "${version}",
-
   "name": "FastQuit",
   "description": "This mod lets you return to the Title Screen early while your world is still saving in the background.",
   "authors": [
-    "KingContaria"
+    "contaria"
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/fastquit",
-    "sources": "https://github.com/KingContaria/FastQuit",
-    "issues": "https://github.com/KingContaria/FastQuit/issues"
+    "sources": "https://github.com/contariaa/FastQuit",
+    "issues": "https://github.com/contariaa/FastQuit/issues"
   },
-
   "license": "MIT",
   "icon": "assets/fastquit/icon.png",
-
   "environment": "client",
   "entrypoints": {
-    "preLaunch": [
-      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
-    ],
     "client": [
-      "com.kingcontaria.fastquit.FastQuit"
+      "me.contaria.fastquit.FastQuit"
     ],
     "modmenu": [
-      "com.kingcontaria.fastquit.ModMenuIntegration"
+      "me.contaria.fastquit.ModMenuIntegration"
     ]
   },
   "mixins": [
     "fastquit.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.16.9",
     "minecraft": ">=1.21.6",
@@ -43,7 +36,6 @@
   "suggests": {
     "modmenu": "*"
   },
-
   "custom": {
     "modmenu": {
       "links": {
@@ -53,7 +45,7 @@
       }
     },
     "catalogue": {
-      "configFactory": "com.kingcontaria.fastquit.CatalogueIntegration"
+      "configFactory": "me.contaria.fastquit.CatalogueIntegration"
     }
   }
 }

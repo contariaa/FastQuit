@@ -1,4 +1,4 @@
-package com.kingcontaria.fastquit;
+package me.contaria.fastquit;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;

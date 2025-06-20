@@ -12,15 +12,11 @@ This is done by reusing the info from the still saving world.
 In its current state this should be safe to do as measures for thread safety have been taken.
 If you do somehow still encounter an issue, the worst thing to happen will be the action failing and Minecraft showing you a toast informing you of it.
 
-***If that happens, please [open an issue](#problems) with your .minecraft/logs/latest.log file attached!***
+**If that happens, please [open an issue](#problems) with your .minecraft/logs/latest.log file attached!**
 
 ### Join the Discord!
 
 If you are interested in my mods or have any questions, you can join my [Discord](https://discord.gg/B6ZV8SF672)!
-
-### Download this mod
-
-You can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!
 
 ### Configure
 
@@ -92,9 +88,14 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 
 With the help of [MixinExtras](https://github.com/LlamaLad7/MixinExtras) and a custom Mixin Config Plugin, the mixins have been designed to be very non-intrusive while also being very effective.
 
-Because of that there is currently no known incompatibilities.
+Fast Backups:
+- (FIXED in FastQuit v3.1.0+) crash on world exit when "Allow multiple running Worlds" is ON
+- (FIXED in Fast Backups v0.17+) crash when quitting Minecraft immediately after world exit, fixed in newer versions of Fast Backup
 
-If you do suspect an incompatibility with another mod, please [open an issue](#problems)!
+Wakes:
+- (FIXED in Wakes v0.4.0+) crash on world exit with Wakes 0.3.0
+
+If you suspect an incompatibility with another mod, please [open an issue](#problems)!
 
 ### Problems?
 
