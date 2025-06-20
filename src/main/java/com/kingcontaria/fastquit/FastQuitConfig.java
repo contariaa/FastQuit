@@ -67,7 +67,7 @@ public class FastQuitConfig implements ConfigData {
 
     static {
         // Put all conflicting Mod ID's in this set
-        Set<String> incompatibleModIDs = Set.of("quilt_biome");
+        Set<String> incompatibleModIDs = Set.of("quilt_biome", "fastback");
 
         for (String modID : incompatibleModIDs) {
             FabricLoader.getInstance().getModContainer(modID).ifPresent(modContainer -> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.add(modContainer.getMetadata().getName()));
