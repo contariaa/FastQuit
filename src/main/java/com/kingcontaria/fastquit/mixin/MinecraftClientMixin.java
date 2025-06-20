@@ -50,7 +50,7 @@ public abstract class MinecraftClientMixin {
             method = "stop",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;disconnect()V",
+                    target = "Lnet/minecraft/client/world/ClientWorld;disconnect(Lnet/minecraft/text/Text;)V",
                     shift = At.Shift.AFTER
             )
     )
