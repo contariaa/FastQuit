@@ -82,6 +82,9 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 - ImVietnam (Vietnamese)
 - ishi-sama (French)
 - KAGUYA-1137 (Japanese)
+- demorogabrtz (Portuguese)
+- ReallySuperOtter (Swedish)
+- asabhi6776 (Hindi)
 ####
 
 ### Compatibility
