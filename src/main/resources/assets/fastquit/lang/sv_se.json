@@ -1,0 +1,32 @@
+{
+  "fastquit.toast.title": "FastQuit är färdig!",
+  "fastquit.toast.description": "Sparade klart \"%s\"",
+  "fastquit.toast.deleted": "\"%s\" blev raderad",
+
+  "fastquit.screen.waiting": "Väntar på att \"%s\" ska spara klart...",
+
+  "fastquit.config.general.showSavingTime.toastsOnly": "Endast notiser",
+  "fastquit.config.performance.backgroundPriority.1": "1 (Minimum)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (Rekomenderat)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (Standard)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (Maximum)",
+  "fastquit.config.compat.allowMultipleServers.disabledForCompat": "§cDen här inställningen är avständ för att undvika problem med följande moddar:\n%s",
+
+  "text.autoconfig.fastquit.title": "FastQuit",
+  "text.autoconfig.fastquit.category.default": "Allmänt",
+  "text.autoconfig.fastquit.option.renderSavingScreen": "Rendera \"Sparar världen\"-skärmen",
+  "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "Om man spelar med högt renderingsavstånd kan det fortfarande ta ett tag för att den lokala datablockslagringscachen måste tömmas.\nOm du sätter på den här inställningen kommer \"Sparar världen\"-skärmen renderas.",
+  "text.autoconfig.fastquit.option.showToasts": "Visa notiser",
+  "text.autoconfig.fastquit.option.showToasts.@Tooltip": "Låter en notis visas innan världen har sparats klart.",
+  "text.autoconfig.fastquit.option.showSavingTime": "Visa sparningstid",
+  "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "Låter tiden det tog/tar att spara världen visas som en notis och på världslistan.",
+  "text.autoconfig.fastquit.category.performance": "Prestanda",
+  "text.autoconfig.fastquit.option.backgroundPriority": "Bakgrundstrådsprioritet",
+  "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "Sätter serverns trådprioritet när den sparar världar i bakgrunden.\nDetta görs för att förbättra klientprestanda men gör så det tar längre tid överlag.",
+  "text.autoconfig.fastquit.category.compat": "Moddkompatibilitet",
+  "text.autoconfig.fastquit.option.allowMultipleServers": "Tillåt flera världar köra samtidigt",
+  "text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip": "Låter dig gå med i en ny värld medan den gamla fortfarande sparar.\nDu kan göra detta i standard Minecraft men vissa moddar kan ha problem med att köra 2 servrar samtidigt.",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Återgå till huvudmenyn medan världen fortfarande sparar!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "Den här modden låter en återgå till huvudmenyn tidigare medan världen fortfarande sparar i bakgrunden."
+}
