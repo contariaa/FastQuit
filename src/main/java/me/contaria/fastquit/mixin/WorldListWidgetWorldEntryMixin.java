@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
@@ -19,17 +19,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldListWidget.WorldEntry.class)
-public abstract class WorldListWidgetWorldEntryMixin {
+public abstract class WorldListWidgetWorldEntryMixin extends WorldListWidget.Entry {
 
     @Shadow
     @Final
-    private SelectWorldScreen screen;
+    private Screen screen;
     @Shadow
     @Final
     private MinecraftClient client;
     @Shadow
     @Final
     LevelSummary level;
+
+    @Shadow
+    protected abstract int getTextX();
 
     @WrapOperation(
             method = {
@@ -69,24 +72,18 @@ public abstract class WorldListWidgetWorldEntryMixin {
         this.client.setScreen(this.screen);
     }
 
-    @Inject(
-            method = "render",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V",
-                    ordinal = 0,
-                    shift = At.Shift.AFTER
-            )
-    )
-    private void fastquit$renderSavingTimeOnWorldList(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("TAIL"))
+    private void fastquit$renderSavingTimeOnWorldList(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta, CallbackInfo ci) {
         if (FastQuit.CONFIG.showSavingTime == FastQuitConfig.ShowSavingTime.TRUE) {
             FastQuit.getSavingWorld(this.client.getLevelStorage().getSavesDirectory().resolve(this.level.getName())).ifPresent(server -> {
-                WorldInfo info = FastQuit.savingWorlds.get(server);
-                if (info != null) {
-                    String time = info.getTimeSaving() + " ⌛";
-                    context.drawText(this.client.textRenderer, time, x + entryWidth - this.client.textRenderer.getWidth(time) - 4, y + 1, -6939106, false);
-                }
-            });
+                        WorldInfo info = FastQuit.savingWorlds.get(server);
+                        if (info != null) {
+                            String time = info.getTimeSaving() + " ⌛";
+                            int x = this.getTextX();
+                            int y = this.getContentY() + 1;
+                            context.drawText(this.client.textRenderer, time, x + 200 - this.client.textRenderer.getWidth(time) - 4, y, -6939106, false);
+                        }
+                    });
         }
     }
 }

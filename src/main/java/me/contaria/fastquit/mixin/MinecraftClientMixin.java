@@ -36,13 +36,13 @@ public abstract class MinecraftClientMixin {
     }
 
     @WrapWithCondition(
-            method = "reset",
+            method = { "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V", "enterReconfiguration" },
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"
+                    target = "Lnet/minecraft/client/MinecraftClient;setScreenAndRender(Lnet/minecraft/client/gui/screen/Screen;)V"
             )
     )
-    private boolean fastquit$doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
+    private boolean fastquit$skipSavingScreen(MinecraftClient client, Screen screen) {
         return FastQuit.CONFIG.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
     }
 
