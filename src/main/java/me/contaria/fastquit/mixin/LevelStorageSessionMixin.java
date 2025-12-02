@@ -51,6 +51,10 @@ public abstract class LevelStorageSessionMixin {
 
     @Synchronized
     @Shadow
+    protected abstract void save(NbtCompound compound) throws IOException;
+
+    @Synchronized
+    @Shadow
     public abstract long createBackup() throws IOException;
 
     @Synchronized
@@ -60,6 +64,10 @@ public abstract class LevelStorageSessionMixin {
     @Synchronized
     @Shadow
     protected abstract void save(Consumer<NbtCompound> nbtProcessor) throws IOException;
+
+    @Synchronized
+    @Shadow
+    public abstract boolean tryRestoreBackup();
 
     @Synchronized
     @Shadow

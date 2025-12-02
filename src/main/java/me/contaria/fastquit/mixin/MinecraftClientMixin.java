@@ -1,14 +1,14 @@
 package me.contaria.fastquit.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.contaria.fastquit.FastQuit;
-import me.contaria.fastquit.TextHelper;
 import me.contaria.fastquit.WorldInfo;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
+    @Shadow
+    private boolean integratedServerRunning;
 
     @Redirect(
             method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V",
@@ -35,15 +37,19 @@ public abstract class MinecraftClientMixin {
         return true;
     }
 
-    @WrapWithCondition(
-            method = "reset",
+    @WrapOperation(
+            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"
+                    target = "Lnet/minecraft/client/MinecraftClient;setScreenAndRender(Lnet/minecraft/client/gui/screen/Screen;)V"
             )
     )
-    private boolean fastquit$doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
-        return FastQuit.CONFIG.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
+    private void fastquit$doNotOpenSaveScreen(MinecraftClient client, Screen screen, Operation<Void> original) {
+        if (FastQuit.CONFIG.renderSavingScreen && this.integratedServerRunning) {
+            original.call(client, screen);
+        } else {
+            client.setScreen(screen);
+        }
     }
 
     @Inject(
