@@ -28,6 +28,12 @@ public abstract class LevelStorageMixin {
             FastQuit.wait(FastQuit.savingWorlds.keySet());
         }
         FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(FastQuit::wait);
+        if (!FastQuit.savingWorlds.isEmpty()) {
+            FastQuit.warn(String.join(" ",
+                    "FastQuit is allowing a world to load while another is currently being saved, which may cause problems with mod compatibility.",
+                    "Try disabling \"Allow multiple running worlds\" in FastQuit settings if you are experiencing issues."
+            ));
+        }
     }
 
     // method_43418 - lambda in loadSummaries

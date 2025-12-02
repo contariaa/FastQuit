@@ -9,13 +9,16 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Config(name = "fastquit")
 public class FastQuitConfig implements ConfigData {
@@ -59,20 +62,16 @@ public class FastQuitConfig implements ConfigData {
     private boolean allowMultipleServers = true;
 
     /**
-     * This {@link Set} holds the names of all currently active mods that conflict with {@link FastQuitConfig#allowMultipleServers}.
+     * This {@link List} holds the names of all currently active mods that conflict with {@link FastQuitConfig#allowMultipleServers}.
      * @see FastQuitConfig#allowMultipleServers()
      */
     @ConfigEntry.Gui.Excluded
-    private static final Set<String> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS = new HashSet<>();
-
-    static {
-        // Put all conflicting Mod ID's in this set
-        Set<String> incompatibleModIDs = Set.of("quilt_biome", "fastback");
-
-        for (String modID : incompatibleModIDs) {
-            FabricLoader.getInstance().getModContainer(modID).ifPresent(modContainer -> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.add(modContainer.getMetadata().getName()));
-        }
-    }
+    private static final List<String> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS = Stream.of("quilt_biome", "fastback", "ixeris")
+            .map(FabricLoader.getInstance()::getModContainer)
+            .flatMap(Optional::stream)
+            .map(ModContainer::getMetadata)
+            .map(ModMetadata::getName)
+            .toList();
 
     /**
      * @return Returns {@code false} when Quilt Biome API is loaded, returns {@link FastQuitConfig#allowMultipleServers} otherwise.
@@ -161,7 +160,7 @@ public class FastQuitConfig implements ConfigData {
         } else {
             modCompatCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers"), ModCompat.class, ModCompat.DISABLED)
                     .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip").append("\n\n").append(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.disabledForCompat", String.join(", ", MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS))))
-                    .setEnumNameProvider(disabled -> TextHelper.translatable("addServer.resourcePack.disabled").styled(style -> style.withColor(Formatting.RED)))
+                    .setEnumNameProvider(disabled -> TextHelper.translatable("manageServer.resourcePack.disabled").styled(style -> style.withColor(Formatting.RED)))
                     .build()
             );
         }
