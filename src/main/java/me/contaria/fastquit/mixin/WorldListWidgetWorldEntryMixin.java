@@ -78,14 +78,15 @@ public abstract class WorldListWidgetWorldEntryMixin extends WorldListWidget.Ent
             )
     )
     private void fastquit$renderSavingTimeOnWorldList(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
-        if (FastQuit.CONFIG.showSavingTime == FastQuitConfig.ShowSavingTime.TRUE) {
-            FastQuit.getSavingWorld(this.client.getLevelStorage().getSavesDirectory().resolve(this.level.getName())).ifPresent(server -> {
-                WorldInfo info = FastQuit.savingWorlds.get(server);
-                if (info != null) {
-                    String time = info.getTimeSaving() + " ⌛";
-                    context.drawText(this.client.textRenderer, time, this.getX() + this.getWidth() - this.client.textRenderer.getWidth(time) - 4, this.getY() + 1, -6939106, false);
-                }
-            });
+        if (FastQuit.CONFIG.showSavingTime != FastQuitConfig.ShowSavingTime.TRUE || FastQuit.HAS_WORLDPLAYTIME) {
+            return;
         }
+        FastQuit.getSavingWorld(this.client.getLevelStorage().getSavesDirectory().resolve(this.level.getName())).ifPresent(server -> {
+            WorldInfo info = FastQuit.savingWorlds.get(server);
+            if (info != null) {
+                String time = info.getTimeSaving() + " ⌛";
+                context.drawText(this.client.textRenderer, time, this.getX() + this.getWidth() - this.client.textRenderer.getWidth(time) - 4, this.getY() + 1, -6939106, false);
+            }
+        });
     }
 }

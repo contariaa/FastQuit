@@ -28,6 +28,8 @@ public final class FastQuit implements ClientModInitializer {
     private static final String LOG_PREFIX = "[" + FASTQUIT.getName() + "] ";
     public static final FastQuitConfig CONFIG = AutoConfig.register(FastQuitConfig.class, Toml4jConfigSerializer::new).getConfig();
 
+    public static final boolean HAS_WORLDPLAYTIME = FabricLoader.getInstance().isModLoaded("worldplaytime");
+
     /**
      * Synchronized {@link Map} containing all currently saving {@link IntegratedServer}'s, with a {@link WorldInfo} with more information about the world.
      */
