@@ -20,7 +20,7 @@ public abstract class MinecraftClientMixin {
     private boolean integratedServerRunning;
 
     @Redirect(
-            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V",
+            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;ZZ)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"
@@ -38,7 +38,7 @@ public abstract class MinecraftClientMixin {
     }
 
     @WrapOperation(
-            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V",
+            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;ZZ)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/MinecraftClient;setScreenAndRender(Lnet/minecraft/client/gui/screen/Screen;)V"
