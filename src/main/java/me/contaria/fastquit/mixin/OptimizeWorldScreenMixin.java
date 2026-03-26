@@ -1,11 +1,11 @@
 package me.contaria.fastquit.mixin;
 
 import me.contaria.fastquit.FastQuit;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.worldselection.OptimizeWorldScreen;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import com.mojang.datafixers.DataFixer;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.world.OptimizeWorldScreen;
-import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +19,7 @@ public abstract class OptimizeWorldScreenMixin {
             method = "create",
             at = @At("HEAD")
     )
-    private static void fastquit$waitForSaveOnOptimizeWorld(MinecraftClient client, BooleanConsumer callback, DataFixer dataFixer, LevelStorage.Session session, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
+    private static void fastquit$waitForSaveOnOptimizeWorld(Minecraft client, BooleanConsumer callback, DataFixer dataFixer, LevelStorageSource.LevelStorageAccess session, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
         FastQuit.getSavingWorld(session).ifPresent(FastQuit::wait);
     }
 }

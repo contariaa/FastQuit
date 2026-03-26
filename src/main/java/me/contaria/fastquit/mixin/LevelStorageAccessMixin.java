@@ -4,14 +4,14 @@ import me.contaria.fastquit.FastQuit;
 import me.contaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.serialization.Dynamic;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.world.PlayerSaveHandler;
-import net.minecraft.world.SaveProperties;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.DirectoryLock;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
-import net.minecraft.world.level.storage.SessionLock;
+import net.minecraft.world.level.storage.PlayerDataStorage;
+import net.minecraft.world.level.storage.WorldData;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,48 +26,48 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@Mixin(LevelStorage.Session.class)
-public abstract class LevelStorageSessionMixin {
+@Mixin(LevelStorageSource.LevelStorageAccess.class)
+public abstract class LevelStorageAccessMixin {
 
     @Shadow
     @Final
-    private String directoryName;
+    private String levelId;
 
     @Synchronized
     @Shadow
-    public abstract PlayerSaveHandler createSaveHandler();
+    public abstract PlayerDataStorage createPlayerStorage();
 
     @Synchronized
     @Shadow
-    public abstract @Nullable LevelSummary getLevelSummary(Dynamic<?> dynamic);
+    public abstract @Nullable LevelSummary getSummary(Dynamic<?> dynamic);
 
     @Synchronized
     @Shadow
-    protected abstract @Nullable Dynamic<?> readLevelProperties(boolean old);
+    protected abstract @Nullable Dynamic<?> getDataTag(boolean old);
 
     @Synchronized
     @Shadow
-    public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);
+    public abstract void saveDataTag(RegistryAccess registryManager, WorldData saveProperties, @Nullable CompoundTag nbt);
 
     @Synchronized
     @Shadow
-    protected abstract void save(NbtCompound compound) throws IOException;
+    protected abstract void saveLevelData(CompoundTag compound) throws IOException;
 
     @Synchronized
     @Shadow
-    public abstract long createBackup() throws IOException;
+    public abstract long makeWorldBackup() throws IOException;
 
     @Synchronized
     @Shadow
-    public abstract void deleteSessionLock() throws IOException;
+    public abstract void deleteLevel() throws IOException;
 
     @Synchronized
     @Shadow
-    protected abstract void save(Consumer<NbtCompound> nbtProcessor) throws IOException;
+    protected abstract void modifyLevelDataWithoutDatafix(Consumer<CompoundTag> nbtProcessor) throws IOException;
 
     @Synchronized
     @Shadow
-    public abstract boolean tryRestoreBackup();
+    public abstract boolean restoreLevelDataFromOld();
 
     @Synchronized
     @Shadow
@@ -75,7 +75,7 @@ public abstract class LevelStorageSessionMixin {
 
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(
-            method = "createBackup",
+            method = "makeWorldBackup",
             at = @At("HEAD")
     )
     private void fastquit$waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
@@ -83,15 +83,15 @@ public abstract class LevelStorageSessionMixin {
     }
 
     @Inject(
-            method = "save(Ljava/lang/String;)V",
+            method = "renameLevel(Ljava/lang/String;)V",
             at = @At("TAIL")
     )
     private void fastquit$editSavingWorldName(String name, CallbackInfo ci) {
-        this.getSavingWorld().ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).fastquit$getLevelInfo()).fastquit$setName(name));
+        this.getSavingWorld().ifPresent(server -> ((LevelSettingsAccessor) (Object) ((PrimaryLevelDataAccessor) server.getWorldData()).fastquit$getSettings()).fastquit$setLevelName(name));
     }
 
     @Inject(
-            method = "deleteSessionLock",
+            method = "deleteLevel",
             at = @At("TAIL")
     )
     private void fastquit$deleteSavingWorld(CallbackInfo ci) {
@@ -102,22 +102,22 @@ public abstract class LevelStorageSessionMixin {
             method = "close",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"
+                    target = "Lnet/minecraft/util/DirectoryLock;close()V"
             )
     )
-    private boolean fastquit$checkSessionClose(SessionLock lock) {
-        return !FastQuit.occupiedSessions.remove((LevelStorage.Session) (Object) this);
+    private boolean fastquit$checkSessionClose(DirectoryLock lock) {
+        return !FastQuit.occupiedSessions.remove((LevelStorageSource.LevelStorageAccess) (Object) this);
     }
 
     @Inject(
-            method = "checkValid",
+            method = "checkLock",
             at = @At("HEAD")
     )
     private void fastquit$warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
         if (!Thread.holdsLock(this)) {
             this.getSavingWorld().ifPresent(server -> {
-                FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
-                if (!server.isOnThread()) {
+                FastQuit.warn("Un-synchronized access to \"" + this.levelId + "\" session!");
+                if (!server.isSameThread()) {
                     FastQuit.wait(server);
                 }
             });
@@ -126,6 +126,6 @@ public abstract class LevelStorageSessionMixin {
     
     @Unique
     private Optional<IntegratedServer> getSavingWorld() {
-        return FastQuit.getSavingWorld((LevelStorage.Session) (Object) this);
+        return FastQuit.getSavingWorld((LevelStorageSource.LevelStorageAccess) (Object) this);
     }
 }

@@ -5,11 +5,11 @@ import me.contaria.fastquit.FastQuitConfig;
 import me.contaria.fastquit.WorldInfo;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,74 +18,74 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WorldListWidget.WorldEntry.class)
-public abstract class WorldListWidgetWorldEntryMixin extends WorldListWidget.Entry {
+@Mixin(WorldSelectionList.WorldListEntry.class)
+public abstract class WorldListWidgetWorldEntryMixin extends WorldSelectionList.Entry {
     @Shadow
     @Final
     private Screen screen;
     @Shadow
     @Final
-    private MinecraftClient client;
+    private Minecraft minecraft;
     @Shadow
     @Final
-    LevelSummary level;
+    LevelSummary summary;
 
     @WrapOperation(
             method = {
-                    "edit",
-                    "recreate"
+                    "editWorld",
+                    "recreateWorld"
             },
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"
+                    target = "Lnet/minecraft/world/level/storage/LevelStorageSource;validateAndCreateAccess(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;"
             ),
             require = 2
     )
-    private LevelStorage.Session fastquit$editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
-        return FastQuit.getSession(storage.getSavesDirectory().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
+    private LevelStorageSource.LevelStorageAccess fastquit$editSavingWorld(LevelStorageSource storage, String directoryName, Operation<LevelStorageSource.LevelStorageAccess> original) {
+        return FastQuit.getSession(storage.getBaseDir().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
     }
 
     @WrapOperation(
-            method = "delete",
+            method = "doDeleteWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/storage/LevelStorage;createSessionWithoutSymlinkCheck(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"
+                    target = "Lnet/minecraft/world/level/storage/LevelStorageSource;createAccess(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;"
             )
     )
-    private LevelStorage.Session fastquit$deleteSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
-        return FastQuit.getSession(storage.getSavesDirectory().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
+    private LevelStorageSource.LevelStorageAccess fastquit$deleteSavingWorld(LevelStorageSource storage, String directoryName, Operation<LevelStorageSource.LevelStorageAccess> original) {
+        return FastQuit.getSession(storage.getBaseDir().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
     }
 
     // While this should not be needed anymore, I'll leave it in just in case something goes wrong.
     @Inject(
-            method = "edit",
+            method = "editWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/toast/SystemToast;addWorldAccessFailureToast(Lnet/minecraft/client/MinecraftClient;Ljava/lang/String;)V"
+                    target = "Lnet/minecraft/client/gui/components/toasts/SystemToast;onWorldAccessFailure(Lnet/minecraft/client/Minecraft;Ljava/lang/String;)V"
             )
     )
     private void fastquit$openWorldListWhenFailed(CallbackInfo ci) {
-        this.client.setScreen(this.screen);
+        this.minecraft.setScreen(this.screen);
     }
 
     @Inject(
-            method = "render",
+            method = "renderContent",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/widget/TextWidget;render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    target = "Lnet/minecraft/client/gui/components/StringWidget;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
                     ordinal = 0,
                     shift = At.Shift.AFTER
             )
     )
-    private void fastquit$renderSavingTimeOnWorldList(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
+    private void fastquit$renderSavingTimeOnWorldList(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
         if (FastQuit.CONFIG.showSavingTime != FastQuitConfig.ShowSavingTime.TRUE || FastQuit.HAS_WORLDPLAYTIME) {
             return;
         }
-        FastQuit.getSavingWorld(this.client.getLevelStorage().getSavesDirectory().resolve(this.level.getName())).ifPresent(server -> {
+        FastQuit.getSavingWorld(this.minecraft.getLevelSource().getBaseDir().resolve(this.summary.getLevelId())).ifPresent(server -> {
             WorldInfo info = FastQuit.savingWorlds.get(server);
             if (info != null) {
                 String time = info.getTimeSaving() + " ⌛";
-                context.drawText(this.client.textRenderer, time, this.getX() + this.getWidth() - this.client.textRenderer.getWidth(time) - 4, this.getY() + 1, -6939106, false);
+                context.drawString(this.minecraft.font, time, this.getX() + this.getWidth() - this.minecraft.font.width(time) - 4, this.getY() + 1, -6939106, false);
             }
         });
     }

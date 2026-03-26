@@ -1,16 +1,16 @@
 package me.contaria.fastquit;
 
-import net.minecraft.client.gui.screen.MessageScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.GenericMessageScreen;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-public class WaitingScreen extends MessageScreen {
+public class WaitingScreen extends GenericMessageScreen {
 
     private final CallbackInfo callbackInfo;
 
-    public WaitingScreen(Text text, @Nullable CallbackInfo callbackInfo) {
+    public WaitingScreen(Component text, @Nullable CallbackInfo callbackInfo) {
         super(text);
         if (callbackInfo != null && !callbackInfo.isCancellable()) {
             FastQuit.warn("Provided CallbackInfo for \"" + callbackInfo.getId() + "\" is not cancellable!");
@@ -23,7 +23,7 @@ public class WaitingScreen extends MessageScreen {
     public void init() {
         super.init();
         if (this.callbackInfo != null) {
-            this.addDrawableChild(ButtonWidget.builder(TextHelper.BACK, button -> this.close()).dimensions(this.width - 100 - 5, this.height - 20 - 5, 100, 20).build());
+            this.addRenderableWidget(Button.builder(TextHelper.BACK, button -> this.onClose()).bounds(this.width - 100 - 5, this.height - 20 - 5, 100, 20).build());
         }
     }
 
@@ -33,8 +33,8 @@ public class WaitingScreen extends MessageScreen {
     }
 
     @Override
-    public void close() {
-        super.close();
+    public void onClose() {
+        super.onClose();
         if (this.callbackInfo != null) {
             this.callbackInfo.cancel();
         }

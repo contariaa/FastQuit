@@ -11,9 +11,9 @@ import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.server.IntegratedServer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -160,7 +160,7 @@ public class FastQuitConfig implements ConfigData {
         } else {
             modCompatCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers"), ModCompat.class, ModCompat.DISABLED)
                     .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip").append("\n\n").append(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.disabledForCompat", String.join(", ", MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS))))
-                    .setEnumNameProvider(disabled -> TextHelper.translatable("manageServer.resourcePack.disabled").styled(style -> style.withColor(Formatting.RED)))
+                    .setEnumNameProvider(disabled -> TextHelper.translatable("manageServer.resourcePack.disabled").withStyle(style -> style.withColor(ChatFormatting.RED)))
                     .build()
             );
         }

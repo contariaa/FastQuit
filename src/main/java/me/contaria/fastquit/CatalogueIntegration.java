@@ -1,7 +1,7 @@
 package me.contaria.fastquit;
 
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 /**
  * Provides support for configuring options through Catalogue.

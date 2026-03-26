@@ -1,22 +1,22 @@
 package me.contaria.fastquit;
 
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 /**
  * Utility class for ease of porting to older Minecraft versions.
  */
 public final class TextHelper {
 
-    public static final Text OFF = ScreenTexts.OFF;
-    public static final Text BACK = ScreenTexts.BACK;
+    public static final Component OFF = CommonComponents.OPTION_OFF;
+    public static final Component BACK = CommonComponents.GUI_BACK;
 
-    public static MutableText translatable(String key, Object... args) {
-        return Text.translatable(key, args);
+    public static MutableComponent translatable(String key, Object... args) {
+        return Component.translatable(key, args);
     }
 
-    public static MutableText literal(String string) {
-        return Text.literal(string);
+    public static MutableComponent literal(String string) {
+        return Component.literal(string);
     }
 }

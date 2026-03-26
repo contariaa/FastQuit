@@ -1,15 +1,15 @@
 package me.contaria.fastquit.mixin;
 
-import net.minecraft.world.level.storage.LevelStorage;
-import net.minecraft.world.level.storage.SessionLock;
+import net.minecraft.util.DirectoryLock;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(LevelStorage.Session.class)
+@Mixin(LevelStorageSource.LevelStorageAccess.class)
 public interface LevelStorageSessionAccessor {
     @Accessor("lock")
-    SessionLock fastquit$getLock();
+    DirectoryLock fastquit$getLock();
 
-    @Accessor("directory")
-    LevelStorage.LevelSave fastquit$getDirectory();
+    @Accessor("levelDirectory")
+    LevelStorageSource.LevelDirectory fastquit$getLevelDirectory();
 }

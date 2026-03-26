@@ -1,8 +1,8 @@
 package me.contaria.fastquit.mixin;
 
 import me.contaria.fastquit.FastQuit;
-import net.minecraft.client.gui.screen.world.EditWorldScreen;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.client.gui.screens.worldselection.EditWorldScreen;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,7 +15,7 @@ public abstract class EditWorldScreenMixin {
 
     @Shadow
     @Final
-    private LevelStorage.Session storageSession;
+    private LevelStorageSource.LevelStorageAccess levelAccess;
 
     // method_54595 - Optimize World
     // method_54596 - Make Backup
@@ -30,6 +30,6 @@ public abstract class EditWorldScreenMixin {
             cancellable = true
     )
     private void waitForSaveOnBackupOrOptimizeWorld_cancellable(CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.storageSession).ifPresent(server -> FastQuit.wait(server, ci));
+        FastQuit.getSavingWorld(this.levelAccess).ifPresent(server -> FastQuit.wait(server, ci));
     }
 }

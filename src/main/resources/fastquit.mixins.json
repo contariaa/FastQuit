@@ -5,19 +5,19 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "EditWorldScreenMixin",
-    "IntegratedServerLoaderMixin",
-    "LevelInfoAccessor",
-    "LevelPropertiesAccessor",
-    "LevelStorageMixin",
+    "LevelSettingsAccessor",
+    "LevelStorageAccessMixin",
     "LevelStorageSessionAccessor",
-    "LevelStorageSessionMixin",
-    "MinecraftClientAccessor",
-    "MinecraftClientMixin",
+    "LevelStorageSourceMixin",
+    "MinecraftAccessor",
+    "MinecraftMixin",
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
     "OptimizeWorldScreenMixin",
-    "UploadCompressorMixin",
-    "WorldListWidgetWorldEntryMixin"
+    "PrimaryLevelDataAccessor",
+    "RealmsUploadWorldPackerMixin",
+    "WorldListWidgetWorldEntryMixin",
+    "WorldOpenFlowsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
