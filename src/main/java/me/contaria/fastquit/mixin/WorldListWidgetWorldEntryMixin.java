@@ -6,7 +6,7 @@ import me.contaria.fastquit.WorldInfo;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
 import net.minecraft.world.level.storage.LevelStorageSource;
@@ -69,15 +69,15 @@ public abstract class WorldListWidgetWorldEntryMixin extends WorldSelectionList.
     }
 
     @Inject(
-            method = "renderContent",
+            method = "extractContent",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/components/StringWidget;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+                    target = "Lnet/minecraft/client/gui/components/StringWidget;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
                     ordinal = 0,
                     shift = At.Shift.AFTER
             )
     )
-    private void fastquit$renderSavingTimeOnWorldList(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
+    private void fastquit$renderSavingTimeOnWorldList(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
         if (FastQuit.CONFIG.showSavingTime != FastQuitConfig.ShowSavingTime.TRUE || FastQuit.HAS_WORLDPLAYTIME) {
             return;
         }
@@ -85,7 +85,7 @@ public abstract class WorldListWidgetWorldEntryMixin extends WorldSelectionList.
             WorldInfo info = FastQuit.savingWorlds.get(server);
             if (info != null) {
                 String time = info.getTimeSaving() + " ⌛";
-                context.drawString(this.minecraft.font, time, this.getX() + this.getWidth() - this.minecraft.font.width(time) - 4, this.getY() + 1, -6939106, false);
+                context.text(this.minecraft.font, time, this.getX() + this.getWidth() - this.minecraft.font.width(time) - 4, this.getY() + 1, -6939106, false);
             }
         });
     }

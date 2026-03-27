@@ -38,7 +38,7 @@ public abstract class LevelStorageSourceMixin {
 
     // method_43418 - lambda in loadSummaries
     @Inject(
-            method = "method_43418",
+            method = "lambda$loadLevelSummaries$0",
             at = @At(
                     value = "INVOKE",
                     target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"
@@ -49,7 +49,7 @@ public abstract class LevelStorageSourceMixin {
     private void fastquit$addCurrentlySavingLevelsToWorldList(LevelStorageSource.LevelDirectory levelSave, CallbackInfoReturnable<LevelSummary> cir) {
         FastQuit.getSession(levelSave.path()).ifPresent(session -> {
             try (session) {
-                cir.setReturnValue(session.getSummary(session.getDataTag()));
+                cir.setReturnValue(session.fixAndGetSummaryFromTag(session.getUnfixedDataTagWithFallback()));
             } catch (Exception e) {
                 FastQuit.error("Failed to load level summary from saving server!", e);
             }

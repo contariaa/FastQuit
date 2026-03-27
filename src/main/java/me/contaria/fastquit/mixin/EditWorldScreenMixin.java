@@ -21,8 +21,8 @@ public abstract class EditWorldScreenMixin {
     // method_54596 - Make Backup
     @Inject(
             method = {
-                    "method_54595",
-                    "method_54596"
+                    "lambda$new$12",
+                    "lambda$new$7"
             },
             at = @At("HEAD"),
             require = 2,

@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Mixin(LevelStorageSource.LevelStorageAccess.class)
@@ -39,15 +40,15 @@ public abstract class LevelStorageAccessMixin {
 
     @Synchronized
     @Shadow
-    public abstract @Nullable LevelSummary getSummary(Dynamic<?> dynamic);
+    public abstract @Nullable LevelSummary fixAndGetSummaryFromTag(Dynamic<?> dynamic);
 
     @Synchronized
     @Shadow
-    protected abstract @Nullable Dynamic<?> getDataTag(boolean old);
+    public abstract @Nullable Dynamic<?> getUnfixedDataTag(boolean old);
 
     @Synchronized
     @Shadow
-    public abstract void saveDataTag(RegistryAccess registryManager, WorldData saveProperties, @Nullable CompoundTag nbt);
+    public abstract void saveDataTag(WorldData saveProperties, @Nullable UUID nbt);
 
     @Synchronized
     @Shadow
