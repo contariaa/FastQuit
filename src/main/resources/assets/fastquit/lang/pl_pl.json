@@ -10,16 +10,23 @@
   "fastquit.config.performance.backgroundPriority.2": "2 (Zalecane)",
   "fastquit.config.performance.backgroundPriority.5": "5 (Domyślne)",
   "fastquit.config.performance.backgroundPriority.10": "10 (Maksimum)",
+  "fastquit.config.compat.allowMultipleServers.disabledForCompat": "§cTa opcja jest wyłączona, by uniknąć problemów z tymi modami:\n%s",
 
+  "text.autoconfig.fastquit.title": "FastQuit",
+  "text.autoconfig.fastquit.category.default": "Ogólne",
   "text.autoconfig.fastquit.option.renderSavingScreen": "Pokazuj ekran \"Zapisywanie świata\"",
   "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "Jeśli grasz z dużym zasięgiem renderowania, zamknięcie świata może zająć trochę czasu, ponieważ trzeba wyczyścić pamięć podręczną klienta.\nWłączając to ustawienie, pojawi się ekran \"Zapisywanie świata\".",
   "text.autoconfig.fastquit.option.showToasts": "Pokazuj powiadomienia",
   "text.autoconfig.fastquit.option.showToasts.@Tooltip": "Określa, czy po zakończeniu zapisywania świata pojawi się powiadomienie.",
   "text.autoconfig.fastquit.option.showSavingTime": "Pokaż czas zapisywania",
   "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "Określa, czy na powiadomieniach i liście światów ma być wyświetlany czas potrzebny do zapisania świata.",
+  "text.autoconfig.fastquit.category.performance": "Wydajność",
   "text.autoconfig.fastquit.option.backgroundPriority": "Priorytet wątku w tle",
   "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "Ustawia priorytet wątku serwera podczas zapisywania światów w tle.\nTo poprawia wydajność klienta podczas zapisywania, ale spowoduje dłuższe zapisywanie w ogólnym rozrachunku.",
-
+  "text.autoconfig.fastquit.category.compat": "Kompatybilność z modami",
+  "text.autoconfig.fastquit.option.allowMultipleServers": "Zezwól na kilka aktywnych światów",
+  "text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip": "Jeżeli ta opcja jest włączona, możesz dołączyć do nowego świata jeszcze podczas zapisywania poprzedniego.\nJest to w pełni bezpieczne bez modów, ale niektóre mody mogą mieć problemy z dwoma aktywnymi serwerami.",
+  
   "fastquit.modmenu.summaryTranslation.fastquit": "Wróć do ekranu tytułowego podczas gdy świat jest wciąż zapisywany!",
   "fastquit.modmenu.descriptionTranslation.fastquit": "Ten mod pozwala wrócić do ekranu tytułowego podczas trwającego zapisywania świata w tle."
 }
