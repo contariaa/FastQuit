@@ -1,7 +1,6 @@
 package me.contaria.fastquit;
 
 import me.contaria.fastquit.mixin.MinecraftAccessor;
-import me.contaria.fastquit.mixin.GuiAccessor;
 import me.contaria.fastquit.mixin.MinecraftServerAccessor;
 import me.contaria.fastquit.mixin.LevelStorageSessionAccessor;
 import com.mojang.logging.LogUtils;
@@ -152,12 +151,7 @@ public final class FastQuit implements ClientModInitializer {
                 ((MinecraftAccessor) client).fastquit$runTick(false);
             }
         } finally {
-            // compatibility with "WorldGen" mod
-            if (oldScreen != null && oldScreen.getClass().getName().equals("caeruleusTait.WorldGen.gui.screens.WGConfigScreen")) {
-                ((GuiAccessor) client.gui).fastquit$setScreen(oldScreen);
-            } else {
-                client.gui.setScreen(oldScreen);
-            }
+            client.gui.setScreen(oldScreen);
         }
     }
 
