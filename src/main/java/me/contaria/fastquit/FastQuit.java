@@ -151,7 +151,7 @@ public final class FastQuit implements ClientModInitializer {
                 ((MinecraftAccessor) client).fastquit$runTick(false);
             }
         } finally {
-            client.gui.setScreen(oldScreen);
+            client.setScreenAndShow(oldScreen);
         }
     }
 
